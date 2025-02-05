@@ -9,8 +9,9 @@ classDiagram
         +String description
         +BigDecimal price
         +Integer quantity
-        +Long category_id
-        +Long supplier_id
+        +Category category
+        +Supplier supplier
+        +User user
     }
 
     class Category {

@@ -30,7 +30,7 @@ classDiagram
 
     class StockMovement {
         +Long id
-        +Long product_id
+        +Product product
         +String movement_type
         +Integer quantity
         +LocalDateTime movement_date

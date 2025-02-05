@@ -44,7 +44,9 @@ classDiagram
         +String profile
     }
 
-    Product "n" --> "1" Category : belongs to
-    Product "n" --> "1" Supplier : supplied by
-    StockMovement "n" --> "1" Product : refers to
+    Product "n" --> "1" Category 
+    Product "n" --> "1" Supplier
+    Product "n" --> "1" User
+    StockMovement "n" --> "1" Product
+    StockMovement "n" --> "1" User
 ```

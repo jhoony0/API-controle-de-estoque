@@ -1,24 +1,29 @@
 package api_controle_estoque.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+
+import java.util.List;
 
 @Entity
 public class Supplier {
 
     @Id
+    @Column(name = "supplier_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty(message = "The name of the supplier is required.")
     private String name;
 
+    @Column(unique = true, nullable = false)
     private String phone;
+    @Column(unique = true, nullable = false)
     private String email;
     private String address;
+
+    @OneToMany(mappedBy = "supplier")
+    private List<Product> products;
 
 
     public Long getId() {
@@ -59,5 +64,13 @@ public class Supplier {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

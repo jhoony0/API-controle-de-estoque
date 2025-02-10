@@ -1,23 +1,30 @@
 package api_controle_estoque.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+
+import java.util.List;
 
 @Entity
 public class User {
 
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "The name of the user is required.")
     private String name;
-    private String login;
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     private String profile;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Product> products;
+
+    @OneToMany(mappedBy = "user")
+    private List<StockMovement> stockMovements;
 
     public Long getId() {
         return id;
@@ -33,14 +40,6 @@ public class User {
 
     public void setName(@NotEmpty(message = "The name of the user is required.") String name) {
         this.name = name;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getEmail() {
@@ -65,5 +64,21 @@ public class User {
 
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<StockMovement> getStockMovements() {
+        return stockMovements;
+    }
+
+    public void setStockMovements(List<StockMovement> stockMovements) {
+        this.stockMovements = stockMovements;
     }
 }

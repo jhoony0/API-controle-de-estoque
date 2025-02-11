@@ -1,7 +1,7 @@
-package api_controle_estoque.service;
+package com.br.api_controle_estoque.service;
 
-import api_controle_estoque.model.StockMovement;
-import api_controle_estoque.repository.StockMovementRepository;
+import com.br.api_controle_estoque.model.StockMovement;
+import com.br.api_controle_estoque.repository.StockMovementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +13,8 @@ public class StockMovementService {
 
     @Autowired
     private StockMovementRepository stockMovementRepository;
-    @Autowired
-    private StockMovement stockMovement;
+
+
 
     public List<StockMovement> listStockMovement(){
         return stockMovementRepository.findAll();

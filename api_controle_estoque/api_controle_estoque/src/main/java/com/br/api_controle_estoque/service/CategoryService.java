@@ -1,7 +1,7 @@
-package api_controle_estoque.service;
+package com.br.api_controle_estoque.service;
 
-import api_controle_estoque.model.Category;
-import api_controle_estoque.repository.CategoryRepository;
+import com.br.api_controle_estoque.model.Category;
+import com.br.api_controle_estoque.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,7 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
-    private Category category;
+
 
 
     public List<Category> listCategory(){

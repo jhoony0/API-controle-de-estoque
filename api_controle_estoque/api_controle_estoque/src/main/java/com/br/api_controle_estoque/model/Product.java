@@ -1,4 +1,4 @@
-package api_controle_estoque.model;
+package com.br.api_controle_estoque.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;

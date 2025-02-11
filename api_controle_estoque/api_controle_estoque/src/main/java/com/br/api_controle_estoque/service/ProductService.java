@@ -1,7 +1,7 @@
-package api_controle_estoque.service;
+package com.br.api_controle_estoque.service;
 
-import api_controle_estoque.model.Product;
-import api_controle_estoque.repository.ProductRepository;
+import com.br.api_controle_estoque.model.Product;
+import com.br.api_controle_estoque.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,7 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-    @Autowired
-    private Product product;
+
 
 
     public List<Product> listProduct(){

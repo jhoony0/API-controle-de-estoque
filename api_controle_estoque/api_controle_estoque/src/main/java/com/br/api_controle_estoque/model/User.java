@@ -1,4 +1,4 @@
-package api_controle_estoque.model;
+package com.br.api_controle_estoque.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id

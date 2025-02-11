@@ -1,7 +1,7 @@
-package api_controle_estoque.service;
+package com.br.api_controle_estoque.service;
 
-import api_controle_estoque.model.Supplier;
-import api_controle_estoque.repository.SupplierRepository;
+import com.br.api_controle_estoque.model.Supplier;
+import com.br.api_controle_estoque.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,8 @@ public class SupplierService {
 
     @Autowired
     private SupplierRepository supplierRepository;
-    @Autowired
-    private Supplier supplier;
+
+
 
     public List<Supplier> listSupplier(){
         return supplierRepository.findAll();

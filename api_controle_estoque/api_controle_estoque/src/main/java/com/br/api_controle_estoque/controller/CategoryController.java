@@ -22,6 +22,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category){
        Category savedCategory = categoryService.saveCategory(category);
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -30,11 +31,45 @@ public class CategoryController {
        return ResponseEntity.created(location).body(savedCategory);
     }
 
+
     @GetMapping("/list")
     public List<Category> listCategory(){
         return categoryService.listCategory();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Category> searchCategory(@PathVariable Long id){
+        Category findCategory = categoryService.searchCategory(id);
+        if (findCategory == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(findCategory);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id,
+                                                   @Valid @RequestBody Category category){
+
+        Category existingCategory = categoryService.searchCategory(id);
+
+        if (existingCategory != null){
+            existingCategory.setName(category.getName());
+            existingCategory.setDescription(category.getDescription());
+            existingCategory.setProducts(category.getProducts());
+            return ResponseEntity.ok(categoryService.saveCategory(existingCategory));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
+        Category existingCategory = categoryService.searchCategory(id);
+        if (existingCategory != null){
+            categoryService.deleteCategory(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 
 }

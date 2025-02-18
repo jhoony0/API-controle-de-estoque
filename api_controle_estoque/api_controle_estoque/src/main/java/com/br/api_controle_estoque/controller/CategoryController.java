@@ -23,6 +23,7 @@ public class CategoryController {
     public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category){
        Category savedCategory = categoryService.saveCategory(category);
 
+       // Contruir a URI de destino da nova categoria criada
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

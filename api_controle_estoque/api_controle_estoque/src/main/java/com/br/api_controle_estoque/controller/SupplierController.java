@@ -23,6 +23,7 @@ public class SupplierController {
     public ResponseEntity<Supplier> createSupplier(@Valid @RequestBody Supplier supplier){
         Supplier savedSupplier = supplierService.saveSupplier(supplier);
 
+        // Build the destionation URI for the newly craeted supplier. To return the HTTP status code 201(created)
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

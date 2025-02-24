@@ -21,6 +21,7 @@ public class UserController {
     public ResponseEntity<User> createUser(@Valid @RequestBody User user){
         User savedUser = userService.saveUser(user);
 
+        // Build the destination URI for the newly creates user. To return the HTTP status code 201(created)
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

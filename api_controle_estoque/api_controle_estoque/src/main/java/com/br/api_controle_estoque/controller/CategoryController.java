@@ -4,6 +4,7 @@ import com.br.api_controle_estoque.model.Category;
 import com.br.api_controle_estoque.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,14 +23,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category){
        Category savedCategory = categoryService.saveCategory(category);
-
-       // Build the destination URI for the newly created category. To return the HTTP status code 201(created).
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedCategory.getId())
-                .toUri();
-       return ResponseEntity.created(location).body(savedCategory);
+       return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 

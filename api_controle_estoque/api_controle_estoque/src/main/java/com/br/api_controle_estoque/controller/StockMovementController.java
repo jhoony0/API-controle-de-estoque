@@ -1,11 +1,10 @@
 package com.br.api_controle_estoque.controller;
 
-import com.br.api_controle_estoque.DTO.ProductResponseDTO;
-import com.br.api_controle_estoque.model.Product;
 import com.br.api_controle_estoque.model.StockMovement;
 import com.br.api_controle_estoque.service.StockMovementService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,14 +23,7 @@ public class StockMovementController {
     @PostMapping
     public ResponseEntity<StockMovement> createStockMovement(@Valid @RequestBody StockMovement stockMovement){
         StockMovement savedStockMovement = stockMovementService.saveStockMovement(stockMovement);
-
-        // Build the destination URI for the newly created product. To return the HTTP status code 201(created).
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedStockMovement.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(savedStockMovement);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @GetMapping("/list")
     public List<StockMovement> listMovements(){

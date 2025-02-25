@@ -1,16 +1,18 @@
 package com.br.api_controle_estoque.controller;
 
-import com.br.api_controle_estoque.DTO.ProductResponseDTO;
+import com.br.api_controle_estoque.DTO.ProductResponseDto;
 import com.br.api_controle_estoque.model.Product;
 import com.br.api_controle_estoque.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -22,30 +24,26 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product){
         Product savedProduct = productService.saveProduct(product);
-
-        // Build the destination URI for the newly created product. To return the HTTP status code 201(created).
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedProduct.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(savedProduct);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/list")
-    public List<Product> listProducts(){
-        return productService.listProduct();
+    public List<ProductResponseDto> listProducts(){
+        return productService.listProduct().
+                stream().
+                map(ProductResponseDto::fromEntity).
+                collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> findProducts(@PathVariable Long id){
+    public ResponseEntity<ProductResponseDto> findProducts(@PathVariable Long id){
         Product findProduct = productService.searchProduct(id);
 
         if (findProduct == null){
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(findProduct);
+        return ResponseEntity.ok(ProductResponseDto.fromEntity(findProduct));
     }
 
     @PutMapping("/{id}")

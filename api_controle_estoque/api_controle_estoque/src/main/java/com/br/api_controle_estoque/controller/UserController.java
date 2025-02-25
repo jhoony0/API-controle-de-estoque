@@ -4,6 +4,7 @@ import com.br.api_controle_estoque.model.User;
 import com.br.api_controle_estoque.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,14 +21,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user){
         User savedUser = userService.saveUser(user);
-
-        // Build the destination URI for the newly creates user. To return the HTTP status code 201(created)
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedUser.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(savedUser);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/list")

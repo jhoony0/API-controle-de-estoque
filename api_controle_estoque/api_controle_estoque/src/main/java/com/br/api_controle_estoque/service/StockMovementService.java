@@ -1,5 +1,6 @@
 package com.br.api_controle_estoque.service;
 
+import com.br.api_controle_estoque.exceptions.NotFoundException;
 import com.br.api_controle_estoque.model.StockMovement;
 import com.br.api_controle_estoque.repository.StockMovementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class StockMovementService {
     }
 
     public StockMovement searchStockMovement(Long id){
-        return stockMovementRepository.findById(id).orElse(null);
+
+        return stockMovementRepository.findById(id).orElseThrow( () -> new NotFoundException("Nenhuma movimentação encontrada com esse id"));
     }
 
     public void deleteStockMovement(Long id){

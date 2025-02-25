@@ -1,5 +1,6 @@
 package com.br.api_controle_estoque.service;
 
+import com.br.api_controle_estoque.exceptions.NotFoundException;
 import com.br.api_controle_estoque.model.User;
 import com.br.api_controle_estoque.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UserService {
     }
 
     public User searchUser(Long id){
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow( () -> new NotFoundException("Nenhum usuario encontrado com esse id"));
     }
 
     public void deleteUser(Long id){

@@ -1,5 +1,6 @@
 package com.br.api_controle_estoque.service;
 
+import com.br.api_controle_estoque.exceptions.NotFoundException;
 import com.br.api_controle_estoque.model.Category;
 import com.br.api_controle_estoque.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class CategoryService {
     }
 
     public Category searchCategory(Long id){
-        return categoryRepository.findById(id).orElse(null);
+
+        return categoryRepository.findById(id).orElseThrow( () -> new NotFoundException("Nenhuma categoria encontrada com esse id"));
     }
 
     public void deleteCategory(Long id){

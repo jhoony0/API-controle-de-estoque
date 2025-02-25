@@ -1203,3 +1203,20 @@ alter table if exists product add constraint FK979liw4xk18ncpl87u4tygx2u foreign
 2025-02-11 16:05:36.370682-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists stock_movement add constraint FKdu45c5a22x1dhsesxil5wdmdr foreign key (user_id) references [*]user"; expected "identifier"; SQL statement:
 alter table if exists stock_movement add constraint FKdu45c5a22x1dhsesxil5wdmdr foreign key (user_id) references user [42001-232]
+2025-02-25 00:52:09.151683-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT c FROM Category c LEFT JOIN FETCH c.products WHERE c.id = :id[*]"""; SQL statement:
+SELECT c FROM Category c LEFT JOIN FETCH c.products WHERE c.id = :id" [42000-232]
+2025-02-25 00:52:13.834924-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT c FROM Category c LEFT JOIN FETCH c.products WHERE c.id = :id[*]"";"; SQL statement:
+SELECT c FROM Category c LEFT JOIN FETCH c.products WHERE c.id = :id"; [42000-232]
+2025-02-25 00:53:05.003385-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT c FROM Category c LEFT JOIN FETCH c.products WHERE c.id = 1[*]"";"; SQL statement:
+SELECT c FROM Category c LEFT JOIN FETCH c.products WHERE c.id = 1"; [42000-232]
+2025-02-25 00:53:33.324540-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM Category c LEFT JOIN FETCH c.products\000d\000a WHERE c.id = 1[*]"";"; SQL statement:
+SELECT * FROM Category c LEFT JOIN FETCH c.products
+ WHERE c.id = 1"; [42000-232]
+2025-02-25 00:53:44.686920-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM Category c LEFT JOIN [*]FETCH c.products\000d\000a WHERE c.id = 1"; expected "identifier"; SQL statement:
+SELECT * FROM Category c LEFT JOIN FETCH c.products
+ WHERE c.id = 1 [42001-232]

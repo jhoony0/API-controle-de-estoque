@@ -1,5 +1,6 @@
 package com.br.api_controle_estoque.service;
 
+import com.br.api_controle_estoque.exceptions.NotFoundException;
 import com.br.api_controle_estoque.model.Product;
 import com.br.api_controle_estoque.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ProductService {
     }
 
     public Product searchProduct(Long id){
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id).orElseThrow( () -> new NotFoundException("Nenhum produto encontrado com esse id"));
     }
 
     public void deleteProduct(Long id){

@@ -2,6 +2,8 @@ package com.br.api_controle_estoque.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,6 +19,8 @@ public class Product {
     private String name;
     private String description;
     private BigDecimal price;
+    @Positive(message = "The quantity must be a positive value")
+    @NotNull(message = "The quantity is required")
     private Integer quantity;
 
     @ManyToOne

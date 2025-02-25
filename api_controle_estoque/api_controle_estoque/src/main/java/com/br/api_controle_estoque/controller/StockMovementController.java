@@ -1,5 +1,6 @@
 package com.br.api_controle_estoque.controller;
 
+import com.br.api_controle_estoque.DTO.StockMovementResponseDto;
 import com.br.api_controle_estoque.model.StockMovement;
 import com.br.api_controle_estoque.service.StockMovementService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/stockMovement")
@@ -26,19 +28,21 @@ public class StockMovementController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @GetMapping("/list")
-    public List<StockMovement> listMovements(){
-        return stockMovementService.listStockMovement();
+    public List<StockMovementResponseDto> listMovements(){
+        return stockMovementService.listStockMovement().stream()
+                .map(StockMovementResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StockMovement> findMovements(@PathVariable Long id){
+    public ResponseEntity<StockMovementResponseDto> findMovements(@PathVariable Long id){
         StockMovement findMovement = stockMovementService.searchStockMovement(id);
 
         if (findMovement == null){
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(findMovement);
+        return ResponseEntity.ok(StockMovementResponseDto.fromEntity(findMovement));
     }
 
     @PutMapping("/{id}")

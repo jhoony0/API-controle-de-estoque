@@ -1,5 +1,6 @@
 package com.br.api_controle_estoque.controller;
 
+import com.br.api_controle_estoque.DTO.CategoryResponseDTO;
 import com.br.api_controle_estoque.model.Category;
 import com.br.api_controle_estoque.service.CategoryService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categories")
@@ -28,17 +30,19 @@ public class CategoryController {
 
 
     @GetMapping("/list")
-    public List<Category> listCategory(){
-        return categoryService.listCategory();
+    public List<CategoryResponseDTO> listCategory(){
+        return categoryService.listCategory().stream() //Percorre elementos na lista
+                .map(CategoryResponseDTO::fromEntity) //Converte cada Category para CategoryResponseDTO
+                .collect(Collectors.toList());        // Coleta os DTOs em uma lista
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> searchCategory(@PathVariable Long id){
+    public ResponseEntity<CategoryResponseDTO> searchCategory(@PathVariable Long id){
         Category findCategory = categoryService.searchCategory(id);
         if (findCategory == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(findCategory);
+        return ResponseEntity.ok(CategoryResponseDTO.fromEntity(findCategory));
     }
 
     @PutMapping("/{id}")

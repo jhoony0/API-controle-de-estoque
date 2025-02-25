@@ -1,6 +1,8 @@
 package com.br.api_controle_estoque.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +13,10 @@ public class StockMovement {
     @Column(name = "stock_movement_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String movement_type;
+    @NotNull(message = "The movement type is required")
+    private MovementType movementType;
+    @Positive(message = "The quantity must be a positive value")
+    @NotNull(message = "The quantity is required")
     private Integer quantity;
     private LocalDateTime movement_date;
     private String observation;
@@ -35,12 +39,12 @@ public class StockMovement {
         this.id = id;
     }
 
-    public String getMovement_type() {
-        return movement_type;
+    public @NotNull(message = "The movement type is required") MovementType getMovementType() {
+        return movementType;
     }
 
-    public void setMovement_type(String movement_type) {
-        this.movement_type = movement_type;
+    public void setMovementType(@NotNull(message = "The movement type is required") MovementType movementType) {
+        this.movementType = movementType;
     }
 
     public Integer getQuantity() {

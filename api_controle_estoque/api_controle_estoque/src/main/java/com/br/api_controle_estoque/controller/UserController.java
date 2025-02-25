@@ -1,5 +1,6 @@
 package com.br.api_controle_estoque.controller;
 
+import com.br.api_controle_estoque.DTO.UserResponseDto;
 import com.br.api_controle_estoque.model.User;
 import com.br.api_controle_estoque.service.UserService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -25,18 +27,20 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public List<User> listUsers(){
-        return userService.listUsers();
+    public List<UserResponseDto> listUsers(){
+        return userService.listUsers().stream()
+                .map(UserResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> searchUser(@PathVariable Long id){
+    public ResponseEntity<UserResponseDto> searchUser(@PathVariable Long id){
         User findUser = userService.searchUser(id);
 
         if (findUser == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(findUser);
+        return ResponseEntity.ok(UserResponseDto.fromEntity(findUser));
     }
 
     @PutMapping("/{id}")

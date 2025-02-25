@@ -1,5 +1,6 @@
 package com.br.api_controle_estoque.controller;
 
+import com.br.api_controle_estoque.DTO.SupplierResponseDto;
 import com.br.api_controle_estoque.model.Supplier;
 import com.br.api_controle_estoque.service.SupplierService;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/supplier")
@@ -28,18 +30,20 @@ public class SupplierController {
     }
 
     @GetMapping("/list")
-    public List<Supplier> listSupplier(){
-        return supplierService.listSupplier();
+    public List<SupplierResponseDto> listSupplier(){
+        return supplierService.listSupplier().stream()
+                .map(SupplierResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Supplier> searchSupplier (@PathVariable Long id){
+    public ResponseEntity<SupplierResponseDto> searchSupplier (@PathVariable Long id){
         Supplier findSupplier = supplierService.searchSupplier(id);
 
         if( findSupplier == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(findSupplier);
+        return ResponseEntity.ok(SupplierResponseDto.fromEntity(findSupplier));
     }
 
     @PutMapping("/{id}")

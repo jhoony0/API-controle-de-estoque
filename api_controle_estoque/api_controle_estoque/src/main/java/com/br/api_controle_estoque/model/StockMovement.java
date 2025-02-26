@@ -13,6 +13,7 @@ public class StockMovement {
     @Column(name = "stock_movement_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "The movement type is required")
     private MovementType movementType;
     @Positive(message = "The quantity must be a positive value")

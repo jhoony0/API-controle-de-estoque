@@ -24,7 +24,7 @@ public class StockMovementResponseDto {
     public StockMovementResponseDto(StockMovement stockMovement) {
         this.id = stockMovement.getId();
         this.productName = stockMovement.getProduct() != null ? stockMovement.getProduct().getName() : null;
-        this.movementType = stockMovement.getMovement_type();
+        this.movementType = stockMovement.getMovementType() != null ? stockMovement.getMovementType().name() : null;
         this.quantity = stockMovement.getQuantity();
         this.movementDate = stockMovement.getMovement_date() != null ? stockMovement.getMovement_date().toString() : null;
         this.observation = stockMovement.getObservation();
@@ -34,7 +34,7 @@ public class StockMovementResponseDto {
         return new StockMovementResponseDto(
                 stockMovement.getId(),
                 stockMovement.getProduct() != null ? stockMovement.getProduct().getName() : null,
-                stockMovement.getMovement_type(),
+                stockMovement.getMovementType() != null ? stockMovement.getMovementType().name() : null,
                 stockMovement.getQuantity(),
                 stockMovement.getMovement_date() != null ? stockMovement.getMovement_date().toString() : null,
                 stockMovement.getObservation(),

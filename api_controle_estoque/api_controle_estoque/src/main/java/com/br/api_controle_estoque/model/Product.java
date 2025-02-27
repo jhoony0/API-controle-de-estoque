@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,8 @@ public class Product {
     @Positive(message = "The quantity must be a positive value")
     @NotNull(message = "The quantity is required")
     private Integer quantity;
+
+    private LocalDateTime lastStockUpdate;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -46,6 +49,7 @@ public class Product {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public @NotEmpty(message = "The name of the product is required.") String getName() {
         return name;
@@ -109,5 +113,13 @@ public class Product {
 
     public void setStockMovements(List<StockMovement> stockMovements) {
         this.stockMovements = stockMovements;
+    }
+
+    public LocalDateTime getLastStockUpdate() {
+        return lastStockUpdate;
+    }
+
+    public void setLastStockUpdate(LocalDateTime lastStockUpdate) {
+        this.lastStockUpdate = lastStockUpdate;
     }
 }

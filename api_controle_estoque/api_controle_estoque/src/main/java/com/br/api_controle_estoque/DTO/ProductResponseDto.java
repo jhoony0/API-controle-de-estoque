@@ -3,6 +3,7 @@ package com.br.api_controle_estoque.DTO;
 import com.br.api_controle_estoque.model.Product;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class ProductResponseDto {
 
@@ -11,17 +12,20 @@ public class ProductResponseDto {
     private String description;
     private BigDecimal price;
     private Integer quantity;
+    private LocalDateTime lastStockUpdate;
     private String nameCategory;
     private String namSupplier;
     private String nameUser;
 
+
     public ProductResponseDto(Long id, String name, String description, BigDecimal price, Integer quantity,
-                              String nameCategory, String namSupplier, String nameUser) {
+                              LocalDateTime lastStockUpdate, String nameCategory, String namSupplier, String nameUser) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.lastStockUpdate = lastStockUpdate;
         this.nameCategory = nameCategory;
         this.namSupplier = namSupplier;
         this.nameUser = nameUser;
@@ -37,6 +41,7 @@ public class ProductResponseDto {
                 product.getDescription(),
                 product.getPrice(),
                 product.getQuantity(),
+                product.getLastStockUpdate(),
                 product.getCategory() != null ? product.getCategory().getName() : null, // Nome da Categoria
                 product.getSupplier() != null ? product.getSupplier().getName() : null, // Nome do Fornecedor
                 product.getUser() != null ? product.getUser().getName() : null          // Nome do Usuário
@@ -82,6 +87,14 @@ public class ProductResponseDto {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public LocalDateTime getLastStockUpdate() {
+        return lastStockUpdate;
+    }
+
+    public void setLastStockUpdate(LocalDateTime lastStockUpdate) {
+        this.lastStockUpdate = lastStockUpdate;
     }
 
     public String getNameCategory() {

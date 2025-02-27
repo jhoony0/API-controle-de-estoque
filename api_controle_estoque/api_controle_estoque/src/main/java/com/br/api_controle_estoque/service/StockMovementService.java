@@ -1,6 +1,7 @@
 package com.br.api_controle_estoque.service;
 
 import com.br.api_controle_estoque.DTO.StockMovementRequestDto;
+import com.br.api_controle_estoque.DTO.StockMovementRequestUpdateDto;
 import com.br.api_controle_estoque.exceptions.NotFoundException;
 import com.br.api_controle_estoque.model.MovementType;
 import com.br.api_controle_estoque.model.Product;
@@ -33,16 +34,7 @@ public class StockMovementService {
         return stockMovementRepository.findAll();
     }
 
-    public StockMovement saveStockMovement(StockMovement stockMovement){
-
-
-        if (stockMovement.getId() == null){
-            stockMovement.setMovement_date(LocalDateTime.now());
-        }
-        return stockMovementRepository.save(stockMovement);
-    }
     public StockMovement createStockMovement(StockMovementRequestDto requestDto) {
-
 
         Product product = productRepository.findById(requestDto.productId())
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
@@ -60,6 +52,24 @@ public class StockMovementService {
         stockMovement.setUser(user);
 
         // Lógica para atualizar na tabela de produtos
+        updateProductStock(product, stockMovement);
+        productRepository.save(product);
+
+        return stockMovementRepository.save(stockMovement);
+    }
+
+    // Método para excluir o que a movimentação tinha retirado ou colocado no estoque
+    private void revertStockMovement(Product product, StockMovement stockMovement){
+        if (stockMovement.getMovementType() == MovementType.ENTRADA){
+            product.setQuantity(product.getQuantity() - stockMovement.getQuantity());
+        } else if (stockMovement.getMovementType() == MovementType.SAIDA) {
+            product.setQuantity(product.getQuantity() + stockMovement.getQuantity());
+        }
+
+    }
+
+    //Método para atualizar a tabela de produtos
+    private void updateProductStock(Product product, StockMovement stockMovement) {
         if (stockMovement.getMovementType() == MovementType.ENTRADA) {
             product.setQuantity(product.getQuantity() + stockMovement.getQuantity());
         } else if (stockMovement.getMovementType() == MovementType.SAIDA) {
@@ -68,8 +78,32 @@ public class StockMovementService {
             }
             product.setQuantity(product.getQuantity() - stockMovement.getQuantity());
         }
+        product.setLastStockUpdate(stockMovement.getMovement_date());
+    }
 
-        return stockMovementRepository.save(stockMovement);
+    public StockMovement updateStockMovement(StockMovementRequestUpdateDto updateDto){
+        StockMovement existingMovement = stockMovementRepository.findById(updateDto.id())
+                .orElseThrow(() -> new RuntimeException("Movimentação não encontrada"));
+
+
+        Product product = existingMovement.getProduct();
+
+        if (existingMovement.getMovementType() == MovementType.ENTRADA){
+            product.setQuantity(product.getQuantity() - existingMovement.getQuantity());
+        } else if (existingMovement.getMovementType() == MovementType.SAIDA) {
+            product.setQuantity(product.getQuantity() + existingMovement.getQuantity());
+        }
+
+        existingMovement.setQuantity(updateDto.newQuantity());
+        existingMovement.setMovementType(updateDto.newMovementType());
+        existingMovement.setObservation(updateDto.observation());
+        existingMovement.setMovement_date(LocalDateTime.now());
+
+        updateProductStock(product, existingMovement);
+
+        productRepository.save(product);
+        return stockMovementRepository.save(existingMovement);
+
     }
 
     public StockMovement searchStockMovement(Long id){

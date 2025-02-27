@@ -1,6 +1,7 @@
 package com.br.api_controle_estoque.controller;
 
 import com.br.api_controle_estoque.DTO.StockMovementRequestDto;
+import com.br.api_controle_estoque.DTO.StockMovementRequestUpdateDto;
 import com.br.api_controle_estoque.DTO.StockMovementResponseDto;
 import com.br.api_controle_estoque.model.StockMovement;
 import com.br.api_controle_estoque.service.StockMovementService;
@@ -52,20 +53,16 @@ public class StockMovementController {
 
     @PutMapping("/{id}")
     public ResponseEntity<StockMovement> updateMovement(@PathVariable Long id,
-                                                 @Valid @RequestBody StockMovement movement){
+                                                 @Valid @RequestBody StockMovementRequestUpdateDto movementDto){
 
-        StockMovement existingMovement = stockMovementService.searchStockMovement(id);
-
-
-        if (existingMovement != null){
-            existingMovement.setMovementType(movement.getMovementType());
-            existingMovement.setQuantity(movement.getQuantity());
-            existingMovement.setObservation(movement.getObservation());
-            existingMovement.setProduct(movement.getProduct());
-            existingMovement.setUser(movement.getUser());
-            return ResponseEntity.ok(stockMovementService.saveStockMovement(existingMovement));
+        try {
+            movementDto = new StockMovementRequestUpdateDto(id, movementDto.newQuantity(),
+                    movementDto.newMovementType(), movementDto.observation());
+            StockMovement updatedMovement = stockMovementService.updateStockMovement(movementDto);
+            return ResponseEntity.ok(updatedMovement);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.br.api_controle_estoque.service;
 
 import com.br.api_controle_estoque.DTO.StockMovementRequestDto;
+import com.br.api_controle_estoque.DTO.StockMovementRequestUpdateDto;
 import com.br.api_controle_estoque.model.MovementType;
 import com.br.api_controle_estoque.model.Product;
 import com.br.api_controle_estoque.model.StockMovement;
@@ -46,6 +47,7 @@ class StockMovementServiceTest {
         product = new Product();
         product.setId(1l);
         product.setName("Produto teste");
+        product.setQuantity(0);
 
         user = new User();
         user.setId(1L);
@@ -76,6 +78,7 @@ class StockMovementServiceTest {
         assertEquals(10, stockMovement.getQuantity());
         assertEquals("Movimentação de teste", stockMovement.getObservation());
         assertEquals(user, stockMovement.getUser());
+        assertEquals(10, product.getQuantity());
 
         // Garantir que os métodos de repositório foram chamados
         verify(productRepository, times(1)).findById(1L);
@@ -103,4 +106,53 @@ class StockMovementServiceTest {
 
         assertEquals("Usuário não encontrado", exception.getMessage());
     }
+
+    /*
+    @Test
+    public void testRevertStockMovement(){
+
+        //Arrange
+        Product product1 = new Product();
+        product1.setQuantity(50);
+
+        StockMovement stockMovement = new StockMovement();
+        stockMovement.setMovementType(MovementType.ENTRADA);
+        stockMovement.setQuantity(10);
+
+        //Act
+
+    }*/
+
+    @Test
+    public void testUpdateStockMovement() {
+        // Arrange
+        StockMovementRequestUpdateDto updateDto = new StockMovementRequestUpdateDto
+                (1L, 15, MovementType.SAIDA, "Nova Observação");
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setQuantity(50);
+
+        StockMovement existingMovement = new StockMovement();
+        existingMovement.setId(1L);
+        existingMovement.setProduct(product);
+        existingMovement.setMovementType(MovementType.ENTRADA);
+        existingMovement.setQuantity(10);
+
+        when(stockMovementRepository.findById(1L)).thenReturn(Optional.of(existingMovement));
+        when(stockMovementRepository.save(any(StockMovement.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        StockMovement result = stockMovementService.updateStockMovement(updateDto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(15, result.getQuantity());
+        assertEquals(MovementType.SAIDA, result.getMovementType());
+        assertEquals("Nova Observação", result.getObservation());
+        assertEquals(35, product.getQuantity()); // Verifica se o estoque foi atualizado corretamente
+        verify(productRepository, times(1)).save(product);
+        verify(stockMovementRepository, times(1)).save(any(StockMovement.class));
+    }
+
 }
